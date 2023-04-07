@@ -44,7 +44,7 @@ const weekNumber = Math.ceil((today.getTime() - new Date(today.getFullYear(), 0,
 
 console.log("Week number:", weekNumber);
 
-$$('weeklyt').innerText  = "Weekly Performance (Week "+weekNumber+")"
+$$('weeklyt').innerText  = "Your Weekly Summery (Week "+weekNumber+")"
 
 //Calculate remaining
   // Set the end date of the countdown
@@ -211,6 +211,7 @@ function gotpn(){
   updatetable()
   lastx()
   loadmonthly()
+  othersum()
 }
 
 
@@ -218,6 +219,7 @@ function updatetable(){
 
   database.ref('weekly/'+weekNumber+"/"+pn+"/").on('value', snapshot => {
     tabled = snapshot.val();
+  if(tabled!=null){
     var tl = document.getElementById("wpg").rows.length;
     for (let i = 0; i < tl-1; i++) {
       document.getElementById("wpg").deleteRow(-1);
@@ -261,6 +263,8 @@ if(i == Object.keys(tabled).length-1){
 }
 
   }
+  }
+ 
 
  
    })
@@ -400,3 +404,34 @@ datam = []
     })
 
   }
+
+  function othersum (){
+    $$("weeklyo").innerText = othern+ "'s Weekly Summery (Week "+weekNumber+")"
+    database.ref('weekly/'+weekNumber+"/"+ophone+"/").on('value', snapshot => {
+      tabledo = snapshot.val();
+if(tabledo!=null){
+  var tl = document.getElementById("ows").rows.length;
+  for (let i = 0; i < tl-1; i++) {
+    document.getElementById("ows").deleteRow(-1);
+}
+labels=[]
+mydata=[]
+for (let i = 0; i < Object.keys(tabledo).length; i++) {
+  const e = Object.keys(tabledo)[i];
+  var item = tabledo[e];
+  console.log(item)
+  var row2 = document.getElementById("ows").insertRow(-1);
+        var cell1 = row2.insertCell(0);
+        var cell2 = row2.insertCell(1);
+        var cell3 = row2.insertCell(2);
+cell1.innerHTML = "<b>"+item["lesson"]+"</b>"
+cell2.innerHTML = e.replace("|","/").replace("|","/");
+labels.push(( e.replace("|","/").replace("|","/")))
+cell3.innerHTML=item["hours"] + " h"
+mydata.push(parseFloat(item["hours"]))
+
+
+
+}
+}
+  })}
